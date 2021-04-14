@@ -5,7 +5,7 @@ from distutils.core import setup
 
 setup(
     name='mossum',
-    version='0.1.4',
+    version='0.1.5',
     author='Hjalti Magnússon',
     author_email='hjaltmann@gmail.com',
     packages=['mossum'],
