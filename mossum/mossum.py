@@ -26,8 +26,11 @@ from collections import defaultdict, Counter
 from itertools import chain
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('urls', metavar='URL', nargs='*',
+urls_group = parser.add_mutually_exclusive_group()
+urls_group.add_argument('--urls', '-u', metavar='URL', nargs='*',
                    help='URLs to Moss result pages.')
+urls_group.add_argument('--csv', '-c', metavar='CSV', default=None, 
+                   help='A CSV file from which to read URLs from')
 parser.add_argument('--min-percent', '-p', dest='min_percent', metavar='P', type=int, default=90,
                    help='All matches where less than P%% of both files are matched are ignored. (Default: %(default)s)')
 parser.add_argument('--min-lines', '-l', dest='min_lines', metavar='L', type=int, default=1,
