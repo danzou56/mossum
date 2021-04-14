@@ -76,7 +76,8 @@ class Results:
 
 
 class Match:
-    def __init__(self, first, second, lines, url):
+    def __init__(self, name, first, second, lines, url):
+        self.name = name
         self.first = first
         self.second = second
         self.lines = lines
@@ -229,7 +230,7 @@ def get_results(moss_url, name=None):
         second  = parse_col(second)
         lines = int(lines)
         url = row.a['href']
-        matches.append(Match(first, second, lines, url))
+        matches.append(Match(name, first, second, lines, url))
 
     fil = Filter()
     matches = list(filter(fil.include,matches))
