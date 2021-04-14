@@ -28,7 +28,7 @@ from itertools import chain
 
 parser = argparse.ArgumentParser(description=__doc__)
 urls_group = parser.add_mutually_exclusive_group()
-urls_group.add_argument('--urls', '-u', metavar='URL', nargs='*',
+urls_group.add_argument('--urls', '-u', metavar='URL', nargs='*', default=[],
                    help='URLs to Moss result pages.')
 urls_group.add_argument('--csv', '-c', metavar='CSV', default=None,
                    help='A CSV file from which to read URLs from')
