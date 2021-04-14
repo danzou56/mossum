@@ -49,6 +49,8 @@ parser.add_argument('--output', '-o', default=None,
                    help='Name of output file.')
 parser.add_argument('--show-loops', default=False, action='store_true',
                    help='Include loops in the output graph')
+parser.add_argument('--verbose', '-v', default=0, action='count',
+                   help='Increase verbosity')
 parser.add_argument('--filter', metavar='N', nargs='+', default=None,
                    help='Include only matches between these names.')
 parser.add_argument('--filteri', metavar='N', nargs='+', default=None,
@@ -201,6 +203,8 @@ def merge_results(results):
 
 
 def get_results(moss_url):
+    if args.verbose >= 1:
+        print(f"Getting {moss_url}")
     resp = r.get(moss_url)
     soup = BeautifulSoup(resp.content.decode('utf-8'), 'html5lib')
 

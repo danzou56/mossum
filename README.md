@@ -168,6 +168,11 @@ a file.
 
 Edge labels can be hidden with the `--hide-labels` flag.
 
+### Verbosity
+
+It may be difficult to know whether Mossum is running. If the `--verbose` or 
+`-v` flag is used, Mossum will let you know what it's currently doing.
+
 ## Filters
 
 ### Node filters
