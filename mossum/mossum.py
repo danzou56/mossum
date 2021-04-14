@@ -49,6 +49,8 @@ parser.add_argument('--hide-labels', default=False, action='store_true',
                    help='Hide edge labels, which otherwise show the percentage and lines of code matches have in common')
 parser.add_argument('--show-links', default=False, action='store_true',
                    help='DEPRECATED: Labels with links are shown by default, use --hide-labels to hide them')
+parser.add_argument('--show-assignment-names', default=False, action='store_true',
+                   help='Show assignment name on labels. Ignored if labels are hidden.')
 parser.add_argument('--output', '-o', default=None,
                    help='Name of output file.')
 parser.add_argument('--show-loops', default=False, action='store_true',
@@ -247,8 +249,11 @@ def image(results, index=None):
             'penwidth': 3,
         }
         if not args.hide_labels:
+            label_str = f"{m.percent}% ({m.lines})"
+            if args.show_assignment_names:
+                label_str = f"{m.name[:5]}\n{label_str}"
             extra_opts.update({
-                'label': '{0}% ({1})'.format(m.percent, m.lines),
+                'label': label_str,
                 'labelURL': m.url,
                 'URL': m.url,
                 'fontcolor': color,
