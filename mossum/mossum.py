@@ -18,6 +18,7 @@ import os
 import datetime
 import pydot
 import argparse
+import csv
 import requests as r
 
 from bs4 import BeautifulSoup
@@ -29,7 +30,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 urls_group = parser.add_mutually_exclusive_group()
 urls_group.add_argument('--urls', '-u', metavar='URL', nargs='*',
                    help='URLs to Moss result pages.')
-urls_group.add_argument('--csv', '-c', metavar='CSV', default=None, 
+urls_group.add_argument('--csv', '-c', metavar='CSV', default=None,
                    help='A CSV file from which to read URLs from')
 parser.add_argument('--min-percent', '-p', dest='min_percent', metavar='P', type=int, default=90,
                    help='All matches where less than P%% of both files are matched are ignored. (Default: %(default)s)')
@@ -205,18 +206,18 @@ def merge_results(results):
     return Results(name, matches)
 
 
-def get_results(moss_url):
+def get_results(moss_url, name=None):
     if args.verbose >= 1:
         print(f"Getting {moss_url}")
     resp = r.get(moss_url)
     soup = BeautifulSoup(resp.content.decode('utf-8'), 'html5lib')
 
-    ps = soup('p')
-    name = None
-    if len(ps) >= 2:
-        name = ps[2].text.strip()
-    if not name:
-        name = 'moss_%s' % date_str()
+    if name is None:
+        ps = soup('p')
+        if len(ps) >= 2:
+            name = ps[2].text.strip()
+        if not name:
+            name = 'moss_%s' % date_str()
 
     matches = []
 
@@ -277,12 +278,26 @@ def main():
     args = parser.parse_args()
 
     urls = args.urls
+    names = []
+    if args.csv:
+        with open(args.csv, 'r') as csv_f:
+            rdr = csv.reader(csv_f)
+            for row in rdr:
+                if len(row) == 1:
+                    urls.append(row[0])
+                else:
+                    names.append(row[0])
+                    urls.append(row[1])
+
     if not urls:
         urls = sys.stdin.read().splitlines()
+    
+    if not names:
+        names = [None] * len(urls)
 
     all_res = []
-    for x in urls:
-        res = get_results(x)
+    for u, n in zip(urls, names):
+        res = get_results(u, n)
         all_res.append(res)
 
 
