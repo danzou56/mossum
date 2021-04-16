@@ -252,7 +252,7 @@ def image(results, index=None):
         if not args.hide_labels:
             label_str = f"{m.percent}% ({m.lines})"
             if args.show_assignment_names:
-                label_str = f"{m.name[:7]}\n{label_str}"
+                label_str = f"{m.name}\n{label_str}"
             extra_opts.update({
                 'label': label_str,
                 'labelURL': m.url,
